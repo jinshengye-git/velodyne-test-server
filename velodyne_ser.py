@@ -1,11 +1,11 @@
-# this script is for python2. https://gist.github.com/nitaku/10d0662536f37a087e1b
+# this script is for python3. https://gist.github.com/nitaku/10d0662536f37a087e1b
 # to run it :
-# python velodyne_ser.py 8080
+# python3 velodyne_ser.py 8080
 # to use curl get data:
 # curl http://localhost:8080
 
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-import SocketServer
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import socketserver
 import json
 import cgi
 
@@ -24,7 +24,7 @@ class Server(BaseHTTPRequestHandler):
         # velodyne json status.
         json_msg = '{"gps":{ "pps_state":"Absent", "position":"" }, "motor":{ "state":"On", "rpm":600, "lock":"Off", "phase":0 }, "laser":{ "state":"On" } }'
         parsed = json.loads(json_msg)
-        self.wfile.write(json.dumps(parsed, indent=4, sort_keys=True))
+        self.wfile.write(json.dumps(parsed, indent=4, sort_keys=True).encode('utf-8'))
         
     # POST echoes the message adding a JSON field
     def do_POST(self):
